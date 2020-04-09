@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ClickScript : MonoBehaviour
 {
-	private bool isClicked = false;
+	public bool isClicked = false;
 
 	private void OnMouseDown()
 	{

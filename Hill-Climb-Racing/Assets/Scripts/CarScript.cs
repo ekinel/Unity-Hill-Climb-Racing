@@ -24,7 +24,38 @@ public class CarScript : MonoBehaviour
 
     void Update()
     {
+		frontWheel.motorSpeed = backWheel.motorSpeed;
 		angle = transform.localEulerAngles.z;
-        
-    }
+
+		if(angle >= 180)
+		{
+			angle = angle - 360;
+		}
+
+		if (CarControl[0].isClicked == true)
+		{
+			backWheel.motorSpeed = Mathf.Clamp(backWheel.motorSpeed - (acceleration - gravity * Mathf.PI * (angle / 180) * 80) * Time.deltaTime, maxSpeed, maxBackSpeed);
+		}
+
+		if((CarControl[0].isClicked == false && backWheel.motorSpeed < 0) || (CarControl[0].isClicked == false && backWheel.motorSpeed == 0 && angle < 0))
+		{
+			backWheel.motorSpeed = Mathf.Clamp(backWheel.motorSpeed - (deacceleration - gravity * Mathf.PI * (angle / 180) * 80) * Time.deltaTime, maxSpeed, 0);
+		}
+		else if((CarControl[0].isClicked == false && backWheel.motorSpeed > 0) || (CarControl[0].isClicked == false && backWheel.motorSpeed == 0 && angle > 0))
+		{
+			backWheel.motorSpeed = Mathf.Clamp(backWheel.motorSpeed - (-deacceleration - gravity * Mathf.PI * (angle / 180) * 80) * Time.deltaTime, 0, maxBackSpeed);
+		}
+
+		if(CarControl[1].isClicked == true && backWheel.motorSpeed > 0)
+		{
+			backWheel.motorSpeed = Mathf.Clamp(backWheel.motorSpeed - brakeForce * Time.deltaTime, 0, maxBackSpeed);
+		}
+		else if(CarControl[1].isClicked == true && backWheel.motorSpeed < 0)
+		{
+			backWheel.motorSpeed = Mathf.Clamp(backWheel.motorSpeed + brakeForce * Time.deltaTime, maxBackSpeed, 0);
+		}
+
+		wheelJoints[1].motor = backWheel;
+		wheelJoints[0].motor = frontWheel;
+	}
 }
