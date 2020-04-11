@@ -154,7 +154,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 188709502}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: a9b9f1d29096f8149b4ffe83b75d53f8, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -445,7 +445,7 @@ CircleCollider2D:
   m_GameObject: {fileID: 576967943}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: a9b9f1d29096f8149b4ffe83b75d53f8, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -552,7 +552,7 @@ PolygonCollider2D:
   m_GameObject: {fileID: 852350337}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 801ac579143331c4f93bca1fa5179e9c, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -773,6 +773,10 @@ MonoBehaviour:
   CarControl:
   - {fileID: 320899752}
   - {fileID: 1275274235}
+  map:
+    serializedVersion: 2
+    m_Bits: 256
+  bWheel: {fileID: 188709503}
 --- !u!1 &1062245490
 GameObject:
   m_ObjectHideFlags: 0
@@ -1026,7 +1030,7 @@ GameObject:
   - component: {fileID: 1501437531}
   - component: {fileID: 1501437530}
   - component: {fileID: 1501437529}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1042,7 +1046,7 @@ PolygonCollider2D:
   m_GameObject: {fileID: 1501437528}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: ded027dec56ad79418fec2dd1f79174f, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0

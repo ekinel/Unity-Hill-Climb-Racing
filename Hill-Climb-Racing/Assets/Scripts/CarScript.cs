@@ -15,6 +15,10 @@ public class CarScript : MonoBehaviour
 
 	public ClickScript[] CarControl;
 
+	private bool grounded = false;
+	public LayerMask map;
+	public Transform bWheel;
+
     void Start()
     {
 		wheelJoints = gameObject.GetComponents<WheelJoint2D>();
@@ -22,7 +26,12 @@ public class CarScript : MonoBehaviour
 		backWheel = wheelJoints[1].motor;
     }
 
-    void Update()
+	void Update()
+	{
+		grounded = Physics2D.OverlapCircle(bWheel.transform.position, 0.35f, map);
+	}
+
+	void FixedUpdate()
     {
 		frontWheel.motorSpeed = backWheel.motorSpeed;
 		angle = transform.localEulerAngles.z;
@@ -32,21 +41,32 @@ public class CarScript : MonoBehaviour
 			angle = angle - 360;
 		}
 
-		if (CarControl[0].isClicked == true)
+		if(grounded == true)
 		{
-			backWheel.motorSpeed = Mathf.Clamp(backWheel.motorSpeed - (acceleration - gravity * Mathf.PI * (angle / 180) * 80) * Time.deltaTime, maxSpeed, maxBackSpeed);
+			if (CarControl[0].isClicked == true)
+			{
+				backWheel.motorSpeed = Mathf.Clamp(backWheel.motorSpeed - (acceleration - gravity * Mathf.PI * (angle / 180) * 80) * Time.deltaTime, maxSpeed, maxBackSpeed);
+			}
+
+			if ((CarControl[0].isClicked == false && backWheel.motorSpeed < 0) || (CarControl[0].isClicked == false && backWheel.motorSpeed == 0 && angle < 0))
+			{
+				backWheel.motorSpeed = Mathf.Clamp(backWheel.motorSpeed - (deacceleration - gravity * Mathf.PI * (angle / 180) * 80) * Time.deltaTime, maxSpeed, 0);
+			}
+			else if ((CarControl[0].isClicked == false && backWheel.motorSpeed > 0) || (CarControl[0].isClicked == false && backWheel.motorSpeed == 0 && angle > 0))
+			{
+				backWheel.motorSpeed = Mathf.Clamp(backWheel.motorSpeed - (-deacceleration - gravity * Mathf.PI * (angle / 180) * 80) * Time.deltaTime, 0, maxBackSpeed);
+			}
+		}
+		else if(CarControl[0].isClicked == false && backWheel.motorSpeed < 0)
+		{
+			backWheel.motorSpeed = Mathf.Clamp(backWheel.motorSpeed - deacceleration * Time.deltaTime, maxSpeed, 0);
+		}
+		else if(CarControl[0].isClicked == false && backWheel.motorSpeed > 0)
+		{
+			backWheel.motorSpeed = Mathf.Clamp(backWheel.motorSpeed + deacceleration * Time.deltaTime, 0, maxSpeed);
 		}
 
-		if((CarControl[0].isClicked == false && backWheel.motorSpeed < 0) || (CarControl[0].isClicked == false && backWheel.motorSpeed == 0 && angle < 0))
-		{
-			backWheel.motorSpeed = Mathf.Clamp(backWheel.motorSpeed - (deacceleration - gravity * Mathf.PI * (angle / 180) * 80) * Time.deltaTime, maxSpeed, 0);
-		}
-		else if((CarControl[0].isClicked == false && backWheel.motorSpeed > 0) || (CarControl[0].isClicked == false && backWheel.motorSpeed == 0 && angle > 0))
-		{
-			backWheel.motorSpeed = Mathf.Clamp(backWheel.motorSpeed - (-deacceleration - gravity * Mathf.PI * (angle / 180) * 80) * Time.deltaTime, 0, maxBackSpeed);
-		}
-
-		if(CarControl[1].isClicked == true && backWheel.motorSpeed > 0)
+		if (CarControl[1].isClicked == true && backWheel.motorSpeed > 0)
 		{
 			backWheel.motorSpeed = Mathf.Clamp(backWheel.motorSpeed - brakeForce * Time.deltaTime, 0, maxBackSpeed);
 		}
