@@ -96,7 +96,7 @@ public class CarScript : MonoBehaviour
 		}
 		else if(trigger.tag == "Coin")
 		{
-			coinsNumber++;
+			coinsNumber += 10;
 			Destroy(trigger.gameObject);
 		}
 	}
