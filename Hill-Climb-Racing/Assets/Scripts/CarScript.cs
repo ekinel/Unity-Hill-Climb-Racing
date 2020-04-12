@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CarScript : MonoBehaviour
 {
@@ -19,6 +20,9 @@ public class CarScript : MonoBehaviour
 	public LayerMask map;
 	public Transform bWheel;
 
+	private int coinsNumber = 0;
+	public Text coinsText;
+
     void Start()
     {
 		wheelJoints = gameObject.GetComponents<WheelJoint2D>();
@@ -28,6 +32,7 @@ public class CarScript : MonoBehaviour
 
 	void Update()
 	{
+		coinsText.text = coinsNumber.ToString();
 		grounded = Physics2D.OverlapCircle(bWheel.transform.position, 0.35f, map);
 	}
 
@@ -65,6 +70,10 @@ public class CarScript : MonoBehaviour
 		{
 			backWheel.motorSpeed = Mathf.Clamp(backWheel.motorSpeed + deacceleration * Time.deltaTime, 0, maxSpeed);
 		}
+		if(CarControl[0].isClicked == true && grounded == false)
+		{
+			backWheel.motorSpeed = Mathf.Clamp(backWheel.motorSpeed - (acceleration - gravity * Mathf.PI * (angle / 180) * 80) * Time.deltaTime, maxSpeed, maxBackSpeed);
+		}
 
 		if (CarControl[1].isClicked == true && backWheel.motorSpeed > 0)
 		{
@@ -77,5 +86,18 @@ public class CarScript : MonoBehaviour
 
 		wheelJoints[1].motor = backWheel;
 		wheelJoints[0].motor = frontWheel;
+	}
+
+	void OnTriggerEnter2D(Collider2D trigger)
+	{
+		if(trigger.tag == "Fin")
+		{
+
+		}
+		else if(trigger.tag == "Coin")
+		{
+			coinsNumber++;
+			Destroy(trigger.gameObject);
+		}
 	}
 }
